@@ -1,0 +1,22 @@
+#+SETUPFILE: ~/Documents/Emacs/Org/lecture-notes-latex-export.org
+
+\vspace*{5cm}
+
+\begin{center}
+    \LARGE\textbf{Vector Calculus}
+\end{center}
+
+\vspace*{10px}
+
+\begin{center}
+    \textbf{David Puerta}
+\end{center}
+
+\begin{center}
+    \small\text{Based on Lecture Notes by David Tong and Dexter Chua}
+\end{center}
+
+
+\vspace*{\fill}
+
+\newpage
