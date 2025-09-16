@@ -1,0 +1,12 @@
+#+SETUPFILE: ~/Documents/Emacs/Org/lecture-notes-latex-export.org
+
+\vspace*{5cm}
+
+\begin{abstract}
+These are a set of notes I complied when teaching myself vector calculus. Mainly using David Tong's amazing notes supporting myself with Dexter Chua's notes.
+\end{abstract}
+
+\vspace*{\fill}
+
+\newpage
+
