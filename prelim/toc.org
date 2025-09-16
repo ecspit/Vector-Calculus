@@ -1,0 +1,5 @@
+#+SETUPFILE: ~/Documents/Emacs/Org/lecture-notes-latex-export.org
+
+\tableofcontents
+
+\newpage
