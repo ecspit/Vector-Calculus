@@ -1,0 +1,567 @@
+#+SETUPFILE: ~/Documents/Emacs/Org/lecture-notes-latex-export.org
+
+* Cuves
+
+** Coordinates and Suffix Notation
+
+We will look at maps of the from
+\[
+f:\R{} \to \R{n}
+\]
+which are known as \textit{parametric} curves in $\R{n}$. As we are working in $\R{n}$, we will need an orthonormal basis $\{\vb{e}_i\}$, which can be used to express a vector $\vb{x}$ as
+\[
+\vb{x} = (x^1,x^2,\cdots,x^n) = \sum_{i=1}^{n} x^i\vb{e}_i
+\]
+where we have written $x^i$ instead of $x_i$; these superscripts are not powers. We will also be using the \textit{suffix}\footnote{See [[https://www.ch.cam.ac.uk/files/alt36/suffices.pdf][here]] for a more detailed description of suffix notation} notation conventions which is summarised as follows.
+
+\textbf{Implicit summation}: Instead of writting the sum explicitly, we will be implicitly summing over indicies. So an expression such as
+\[
+\vb{x} = \sum_{i=1}^{n} x^i \vb{e}_i
+\]
+will be written as
+\[
+\vb{x} = x^i \vb{e}_i
+\]
+where here we are implicitly summing over $i= 1,2,\cdots,n$. The index we are summing over is obvious from contex (either the number of dimensions or up to a fixed index $n$).
+
+\textbf{Free and Fixed indicies}: Consider the completely made up expression
+\[
+V_i = a_j b_i c_j + k_i
+\]
+In order to identify which indicies to sum over in our expression we see which indicies are used twice in each term, these are called \textit{free} indicies. The indicies that are used once in each term are called \textit{fixed} indicies and are not summed over.
+
+Our expression above would be written in standard notation as
+\[
+V_i = \sum_j (a_jb_ic_j) + k_i
+\]
+where we are summing over $j$ and $i$ is fixed. A given term can have multiple fixed and free indices. Any index cannot be repeated three or more times in a given term - if this happens then you have usually done something wrong!
+
+We will also mention two functions that will be used throught these notes, the Levi-Civita epsilon and the Kronecker delta function.
+
+\textbf{Levi-Civita epsilon}: The Levi-Civita epsilon, also refered to as epsilon, is a function given by
+\begin{equation}
+\epsilon_{ijk} = \begin{cases} +1 \quad \text{when $(i,j,k)$ is an even permutation of $(1,2,3)$}  \\ -1 \quad \text{when $(i,j,k)$ is an odd permutation of $(1,2,3)$} \\ 0 \quad \text{if any index is repeated}\end{cases}
+\end{equation}
+where an odd/even permutation of $(i,j,k)$ is swapping any two indices and odd/even amount of times. This is in fact the three dimensional version of epsilon and we will meet the more general form later but for now this is what we need.
+
+Some example identies include
+\[
+\epsilon_{ijk} = -\epsilon_{jik} \quad \text{or} \quad \epsilon_{iik} = 0
+\]
+I would suggest spending some time until you are comfortable with the manipulation of the epsilon.
+
+\textbf{Kronecker delta function}: Similar to epsilon, the Kronecker delta function is given by
+\begin{equation}
+\delta_{ij} = \begin{cases} 1 \quad \text{if } i=j \\ 0 \quad \text{if } i \neq j\end{cases}
+\end{equation}
+which is hopefully familiar.
+
+A useful identiy that we will use is
+\begin{equation}
+\epsilon_{ijk}\epsilon_{inm} = \delta_{jm}\delta_{kn} - \delta_{jn}\delta_{km}
+\end{equation}
+which gives a nice reation between the product of two epsilon terms with a common index $i$ and the Kronecker delta function.
+
+** Differentiating a Curve
+
+We say that the function $\vb{x}(t)$ is \textit{differentiable} if as $\delta t \to 0$, we can write
+\begin{equation}
+\vb{x}(t+\delta t) - \vb{x}(t) = \dot{\vb{x}}(t)\delta t+ \mathcal{O}(\delta t^2)
+\end{equation}
+where $\mathcal{O}(\delta t^2)$ is the \smartquote{big-O} notation meaning terms that scale $\delta t^2$ or smaller as $\delta t \to 0$. The term $\dot{\vb{x}}(t)$ is the \textit{derivative} of $\vb{x}(t)$; a vector function that is differentiable everywhere is called \textit{smooth}.
+
+We can write
+\[
+\delta \vb{x}(t) = \vb{x}(t+\delta t) - \vb{x}(t)
+\]
+to have the derivative of the vector function $\vb{x}(t)$ as
+\[
+\der{\vb{x}}{t} = \dot{\vb{x}}(t) = \lim_{\delta t \to0} \frac{\delta \vb{x}}{\delta t}
+\]
+
+To differentiate a vector $\vb{x}(t)$ we can differentiate component wise
+\[
+\vb{x}(t) = x^i\vb{e}_i \Rightarrow \dot{\vb{x}}(t) = \dot{x}^i \vb{e}_i
+\]
+where our choice of basis $\{\vb{e}_i\}$ is independent of $t$. We will look later at the case when $\{\vb{e}_i\}$ are functions of $t$.
+
+In addition, we have the following rules for differentiating a function $f(t)$ and vector functions $\vb{g}(t)$ and $\vb{h}(t)$.
+\[
+\der{}{t} (f\vb{g}) = \der{f}{t} \vb{g} + f \der{\vb{g}}{t}
+\]
+\[
+\der{}{t}(\vb{g} \cdot \vb{h}) = \der{\vb{g}}{t} \cdot \vb{h} + \vb{g} \cdot \der{\vb{h}}{t}
+\]
+\[
+\der{}{t}(\vb{g} \times \vb{h}) = \der{\vb{g}}{t} \times \vb{h} + \vb{g} \times \der{\vb{h}}{t}
+\]
+
+** Tanget Vectors
+
+The vector $\dot{\vb{x}}$ is referred to as the \textit{tangent vector} for the curve $C: \vb{x}(t)$.
+
+The direction of the tangent vector is independent of the choice of parametrisation of the curve $C$. In contrast, the magnitude $\abs{\dot{\vb{x}}(t)}$ of the tangent vector does dependent of the choice of parametrisation. A curve has a \textit{regular} parametrisation if $\dot{\vb{x}}(t) \neq \vb{0}$ for all $t$.
+
+** Arc Length
+
+Suppose that we have a parametrised curve with a parametrisation $t$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+  % plot sine curve
+  \draw[domain=-1:3,samples=200,smooth,thick,BLUE] plot(\x,{sin(\x r)});
+
+  % points at x=1 and x=1.2
+  \fill (0.4,{sin(0.4 r)}) circle (1.5pt) node[above left] {$\vb{x}(t)$};
+  \fill (1.2,{sin(1.2 r)}) circle (1.5pt) node[above right] {$\vb{x}(t+\delta t)$};
+\end{tikzpicture}
+\end{figure}
+The distance $\delta s$ between two nearby points $\vb{x}(t)$ and $\vb{x}(t+\delta t)$ is
+\[
+\delta s = \abs{\delta \vb{x}} + \mathcal{O}(\abs{\delta \vb{x}}^2)= \abs{\dot{\vb{x}}(t) \delta t} + \mathcal{O}(\delta t^2)
+\]
+where the $\mathcal{O}(\abs{\delta \vb{x}}^2)$ comes from the fact that the distance between the two points is not exactly a straight line along the curve and contains higher order terms in $\delta \vb{x}^2$. We then have
+\[
+\der{s}{t} = \pm\left\abs{\der{\vb{x}}{t}\right}
+\]
+where we get the plus sign for increasing $t$ and the minus sign for decreasing $t$.
+
+Hence, if we choose a starting point $t_0$ and an end point $t$ (with $t_0<t$) then the distance along the curve from $t_0$ to $t$ is
+\begin{equation}
+s = \int_{t_0}^{t}\mathrm{d}t' \, \abs{\dot{\vb{x}}(t')}
+\end{equation}
+This is called the \textit{arc length} of the curve.
+
+If we choose a different parametrisation $\tau(t)$ for the curve (which we take to be invertible and smooth with $\dot{\tau}>0$ so that they measure \smartquote{increasing time} in the same direction) then
+\[
+\der{\vb{x}}{t} = \der{\vb{x}}{\tau} \cdot \der{\tau}{t}
+\]
+We can then compute the arc length with the parametrisation $\tau$,
+\[
+s = \int_{t_0}^{t} \mathrm{d}t' \, \abs{\dot{\vb{x}}(t')} = \int_{\tau_0}^{\tau} \mathrm{d}\tau' \, \left\abs{\der{\vb{x}}{\tau'} \cdot \der{\tau'}{t'}\right} \der{t'}{\tau'} = \int_{\tau_0}^{\tau} \mathrm{d}\tau' \left\abs{\der{\vb{x}}{\tau'}\right}
+\]
+This means that the arc length is independent of the choice of parametrisation $t$.
+
+As the arc length of a curve is independent of the choice of parametrisation, then we can parametrise the curve by its arc length. We can think of $\vb{x}(s)$ with its tangent vector $\mathrm{d}\vb{x} / \mathrm{d}s$ which we also denote as $\vb{x}'(s)$.
+
+In addition, as we are viewing $\vb{x}(s)$
+\[
+\der{s}{t} = \pm\left\abs{\der{\vb{x}}{t}\right} \Rightarrow \left\abs{\der{\vb{x}}{s}\right} = 1
+\]
+This means that our tangent vector is a unit vector when working in terms of the arc length.
+
+\textbf{Example}
+
+Consider the curve $\vb{x}=(\cos t,\sin t,t)$ for $t\in[0,4\pi]$.
+
+We then have
+\[
+\dot{\vb{x}}(t) = (-\sin t , \cos t,1)
+\]
+Calculating the arc length from $t=0$ to $t$
+\[
+s = \int_{0}^{t} \mathrm{d}t' \, \sqrt{2} = t\sqrt{2}
+\]
+We then parametrise our curve by $s$
+\[
+\vb{x}(s) = \left(\cos \frac{s}{\sqrt{2}},\sin \frac{s}{\sqrt{2}},\frac{s}{\sqrt{2}}\right)
+\]
+With our tangent vector
+\[
+\vb{x}'(s) = \left(-\frac{1}{\sqrt{2}}\sin \frac{s}{\sqrt{2}},\frac{1}{\sqrt{2}}\cos \frac{s}{\sqrt{2}},\frac{1}{\sqrt{2}}\right)
+\]
+Which has magnitude
+\[
+\abs{\vb{x}'(s)} = \frac{1}{2}\left(\sin^2\frac{s}{\sqrt{2}} + \cos^2\frac{s}{\sqrt{2}}+1\right) = 1
+\]
+as expected.
+
+** Curvature & Torsion
+
+Given a curve $C$ which is parametrised by its arc length $s$, we have shown that the tangent vector
+\[
+\vb{t} = \der{\vb{x}}{s}
+\]
+has unit length. We further define the \textit{curvature} as the magnitude of the derivative of the tangent vector with respect to its arc length
+\begin{equation}
+\kappa(s) = \left\abs{\dder{\vb{x}}{s}\right}
+\end{equation}
+If we normalise the derivative of the tangent vector with respect to its arc length (provided that $\kappa \neq 0$) we arrive at the \textit{principle normal}
+\begin{equation}
+\vb{n} = \frac{1}{\kappa}\dder{\vb{x}}{s} = \frac{1}{\kappa} \der{\vb{t}}{s}
+\end{equation}
+Which has a unit length, $\abs{\vb{n}}=1$. Using the fact that $\vb{t}$ is a unit vector with $\vb{t} \cdot \vb{t} = 1$
+\[
+\der{}{s}(\vb{t} \cdot \vb{t}) = 2 \kappa \vb{n} \cdot \vb{t} = 0
+\]
+As $\kappa \neq 0$ then $\vb{n} \cdot \vb{t} = 0$ and the principle normal is orthogonal to the tangent vector. Hence, the vectors $\{\vb{t},\vb{n}\}$ define a plane called the \textit{osculating plane}.
+
+For each point $s$ on the curve there is an associated osculating plane, draw a circle in each plane that touches the curve at the point $s$ whose curvature is $\kappa(s)$; this is called the \textit{osculating circle}.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}[scale=1.1]
+  % Curve parameter
+  \def\R{3} % actual curvature radius of parabola
+
+  % Draw curve: y = x^2/(2R)
+  \draw[line width=1.1pt, domain=-4:4, samples=200]
+    plot ({\x},{(\x*\x)/(2*\R)});
+
+  % Smaller tangent circle (not true osculating)
+  \def\r{1.5}
+  \draw[line width=1.1pt, GREEN] (0,\r) circle (\r);
+
+  % Frenet frame at P
+  % Tangent vector t
+  \draw[->,thick, BLUE] (0,0) -- (2,0)
+    node[below right=-2pt] {$\mathbf{t}$};
+
+  % Normal vector n
+  \draw[->,thick, orange] (0,0) -- (0,1.6)
+    node[left] {$\mathbf{n}$};
+
+  % Binormal vector b
+  \draw[->,thick, red] (0,0) -- (-2,-1)
+    node[below right=-2pt] {$\mathbf{b}$};
+
+\end{tikzpicture}
+\end{figure}
+
+Working in $\mathbb{R}^3$, we define the \textit{binormal} as the normal to the osculating plane
+\begin{equation}
+\vb{b} = \vb{t} \times \vb{n}
+\end{equation}
+As both $\vb{t}$ and $\vb{n}$ are unit vectors, then $\vb{b}$ is a unit vector. Using the same argument as before, as $\vb{b}$ is a unit vector with $\vb{b} \cdot \vb{b} = 1$
+\[
+\der{}{s}(\vb{b} \cdot \vb{b}) = 2 \vb{b} \cdot \der{\vb{b}}{s} = 0 \Rightarrow \vb{b} \cdot \der{\vb{b}}{s} = 0
+\]
+We also have that $\vb{t} \cdot \vb{b} = 0$ and $\vb{n} \cdot \vb{b} = 0$ from the definition of the cross product, which gives
+\[
+\der{}{s}(\vb{t} \cdot \vb{b}) = \der{\vb{t}}{s}\cdot \vb{b} + \vb{t} \cdot \der{\vb{b}}{s} = \kappa(\vb{n} \cdot \vb{b}) + \vb{t} \cdot \der{\vb{b}}{s}
+\]
+\[
+\Rightarrow \vb{t} \cdot \der{\vb{b}}{s} = 0
+\]
+Which means that $\mathrm{d}\vb{b} / \mathrm{d}s$ is orthogonal to both $\vb{t}$ and $\vb{b}$ and thus must lie parallel to $\vb{n}$. We then define the \textit{torsion} as how much the binormal changes
+\begin{equation}
+\der{\vb{b}}{s} = -\tau(s) \vb{n}
+\end{equation}
+Intuitively, the curvature tells us how much the curve fails to be a straight line and the torsion how much the curve fails to be a plane.
+
+Observe that using $\vb{b} = \vb{t} \times \vb{n}$,
+\[
+\vb{b} \times \vb{t} = (\vb{t} \times \vb{n}) \times \vb{t} = (\vb{t} \cdot \vb{t})\vb{n} - (\vb{n} \cdot \vb{t})\vb{t} = \vb{n}
+\]
+Which we can then use to get
+\[
+\vb{n}' = (\vb{b} \times \vb{t})' = \vb{b}' \times \vb{t} + \vb{b} \times \vb{t}' = (-\tau \vb{n})\times \vb{t} + \vb{b} \times (\kappa \vb{n}) = \tau \vb{b} - \kappa \vb{t}
+\]
+using our previous relationships. We then have three sets of equations
+\begin{align}
+& \der{\vb{t}}{s} = \kappa \vb{n} \\
+& \der{\vb{b}}{s} = -\tau \vb{n} \\\
+& \der{\vb{n}}{s} = \tau \vb{b} - \kappa \vb{t}
+\end{align}
+which are referred to as the \textit{Frent-Serret} equations. If we are given $\kappa(s)$ and $\tau(s)$ with initial conditions on $\vb{b}$ and $\vb{t}$, we can then solve for $\vb{b}$, $\vb{t}$ and the curve $\vb{x}(s)$.
+
+** Line Integral
+
+\textbf{Scalar Fields}
+
+We will first look at the map
+\begin{align*}
+\phi:\mathbb{R}^n \to \mathbb{R} \\
+\vb{x} \to \phi(\vb{x})
+\end{align*}
+We could define the function $\phi\left(\vb{x}(t)\right)$ for a parametrised curve $C$ in $\mathbb{R}^n$ and then integrate over $t$ in the usual way. Yet this will depend on the parametrisation.
+
+Instead, we will work with the arc length $s$. Integrating from the point $\vb{x}(s_a)=\vb{a}$ to $\vb{x}(s_b)=\vb{b}$ on a curve $C$, we define the line integral as
+\begin{equation}
+\int_C\phi \,\mathrm{d}s = \int
+_{s_a}^{s_b}\phi(\vb{x}(s)) \,\mathrm{d}s
+\end{equation}
+
+If instead we are given a curve $C$ with a different parametrisation $\vb{x}(t)$ with $\vb{x}(t_a)=\vb{a}$ and $\vb{x}(t_b)=\vb{b}$, then
+\[
+\int_C\phi \,\mathrm{d}s = \int_{t_a}^{t_b}\phi(\vb{x}(t))\der{s}{t} \,\mathrm{d}t \quad \text{with} \quad \der{s}{t} = \pm \abs{\dot{\vb{x}}(t)}
+\]
+where the sign depend if $t_a<t_b$ or $t_b<t_a$.
+
+\textbf{Vector Fields}
+
+Consider the map
+\[
+\vb{F}:\mathbb{R}^n \to \mathbb{R}^n
+\]
+We could integrate component wise, treating each component as a scalar field to give a vector as an answer.
+
+On the other hand, we can integrate the component of the vector field that lies tangent to the curve to give a scalar as an answer.
+
+Suppose our curve $C$ has a parametrisation $\vb{x}(t)$ and we wish to integrate from $\vb{x}(t_a)=\vb{a}$ to $\vb{x}(t_b)=\vb{b}$. We define the line integral as
+\begin{equation}
+\int_C \vb{F}(\vb{x})\cdot \mathrm{d}\vb{x} = \int_{t_a}^{t_b}\vb{F}(\vb{x}(t)) \cdot \dot{\vb{x}}(t) \,\mathrm{d}t
+\end{equation}
+The orientation is in the direction along the curve, or the direction of the tangent vector $\dot{\vb{x}}$. The orientation is from $\vb{a}$ to $\vb{b}$ regardless if $t_a<t_b$ or $t_b<t_a$.
+
+\textbf{Example}
+
+Let $\phi(\vb{x})=x+y+z$ and $\vb{F}(\vb{x}) = (xe^y,z^2,xy)$. We define the curves
+\begin{align*}
+    & C_1: \vb{x}(t) = (t,t^2,t^3) \\
+    & C_2: \vb{x}(t) = (t,t,t)
+\end{align*}
+and wish to integrate each of the fields along curves $C_1$ and $C_2$ from $\vb{x}=\vb{0}$ to $\vb{x} = \vb{1}$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \draw[->,line width=1.1pt,BLUE] (0,0) -- (1.5,1.5);
+    \draw[line width=1.1pt,BLUE] (1.5,1.5) -- (3,3);
+
+    \draw[line width=1.1pt,
+        domain=0:3,
+        samples=200,
+        postaction={decorate},BLUE,
+        decoration={markings, mark=at position 0.5 with {\arrow{>}}}
+       ]
+    plot ({\x},{(\x*\x)/3});
+
+    \fill[red] (0,0) circle (2pt);
+    \fill[red] (3,3) circle (2pt);
+
+    \node[left] at (0,0) {$\vb{x} = \vb{0}$};
+    \node[right] at (3,3) {$\vb{x} = \vb{1}$};
+
+    \node[left] at (1.6,1.8) {$C_2$};
+    \node[right] at (1.8,1) {$C_1$};
+\end{tikzpicture}
+\end{figure}
+
+Starting with $\phi(\vb{x})$, we see that
+\[
+\int_{C_1}\phi \,\mathrm{d}s = \int_{0}^{1}  \mathrm{d}t \,(t+t^2+t^3) \cdot \abs{(1,2t,3t^2)} =\int_{0}^{1} \mathrm{d}t \,(t+t^2+t^3)\sqrt{1+4t^2+9t^4} \approx 2.715
+\]
+We can also re-parametrise $C_2$ in terms of its arc length
+\[
+\vb{x}(s) = \left(\frac{s}{\sqrt{3}},\frac{s}{\sqrt{3}},\frac{s}{\sqrt{3}}\right) \Rightarrow \int_{C_2}\phi \,\mathrm{d}s = \int_{0}^{\sqrt{3}} \frac{3s}{\sqrt{3}} \,\mathrm{d}s = \frac{3\sqrt{3}}{2}
+\]
+Secondly, integrating $\vb{F}$ along $C_1$
+\[
+\int_{C_1} \vb{F} \cdot \mathrm{d}\vb{x} = \int_{0}^{1} \mathrm{d}t\,(te^{t^2},t^6,t^3) \cdot (1,2t,3t^2) = \int_{0}^{1} \mathrm{d}t\, (te^{t^2}+2t^7+3t^5) = \frac{1}{4}(1+2e)
+\]
+Finally, along $C_2$
+\[
+\int_{C_2}\vb{F} \cdot \mathrm{d}\vb{x} = \int_{0}^{1} \mathrm{d}t\, (te^t,t^2,t^2) \cdot (1,1,1) = \int_{0}^{1}\mathrm{d}t\, (te^t+2t^2) = \frac{5}{3}
+\]
+
+If we wish to integrate along a closed curve $C$ who has the same start and end point, then we denote it as
+\[
+\oint_C \vb{F} \cdot \mathrm{d}\vb{x}
+\]
+In addition, if we have a closed curve $C$ such that $C=\sum_{i}C_i$ with each $C_i$ smooth and joined at the end points, then
+\[
+\oint_C\vb{F} \cdot \mathrm{d}\vb{x} = \sum_i\int_{C_i}\vb{F} \cdot \mathrm{d}\vb{x}
+\]
+We will also define the curve $-C$ for a given curve $C$ which is in the opposite direction,
+\[
+\int_{-C}\vb{F} \cdot \mathrm{d}\vb{x} = - \int_C \vb{F} \cdot \mathrm{d}\vb{x}
+\]
+
+\textbf{Example}
+
+Define the curve $C=C_1-C_2$ with $\vb{F}=(xe^y,z^2,xy)$, $C_1$ and $C_2$ from the previous example. As $C$ is a closed curve then
+\[
+\oint_C\vb{F}\cdot \mathrm{d}\vb{x} = \int_{C_1} \vb{F} \cdot \mathrm{d}\vb{x} - \int_{C_2} \vb{F} \cdot \mathrm{d}\vb{x} = \frac{1}{4}(1+2e) - \frac{5}{3}
+\]
+
+** The Gradient
+
+Take a scalar field $\phi:\mathbb{R}^n \to \mathbb{R}$, we have a partial derivative of $\phi(x^1,x^2,\cdots,x^n)$ as
+\begin{equation}
+\pder{\phi}{x^i} = \lim_{h \to 0} \frac{\phi(x^1,\cdots,x^i+h,\cdots,x^n)-\phi(x^1,\cdots,x^n)}{h}
+\end{equation}
+for $i=1,\cdots,n$. This is a derivative in the $x^i$ direction, treating all other variables as constant.
+
+We can write each of these partial derivatives as
+\[
+\nabla \phi = \pder{\phi}{x^i}\vb{e}_i
+\]
+where $\{\vb{e}_i\}$ is an orthonormal basis for $\mathbb{R}^n$; this is called the \textit{gradient} of $\phi$. This $\nabla \phi$ is a vector field yet it is convention not to write $\boldsymbol{\nabla}\phi$ and understand that $\nabla \phi$ is a vector.
+
+Take a normal unit vector $\hat{\vb{n}}$, the rate of change of $\phi$ in the direction of $\hat{\vb{n}}$ is
+\[
+\mathrm{D}_{\hat{\vb{n}}}\phi = \hat{\vb{n}} \cdot \nabla \phi
+\]
+which is called the \textit{directional derivative}. We see that this is maximised when $\hat{\vb{n}}$ is parallel to the gradient $\nabla \phi$, which tells us that $\nabla \phi$ points towards where $\phi(\vb{x})$ changes the quickest.
+
+\subsection{Conservative Fields}
+
+For a vector field $\vb{F}$, we say it is \textit{conservative} if
+\begin{equation}
+\vb{F} = \nabla \phi
+\end{equation}
+for some scalar field $\phi$; this scalar field is called the \textit{potential}.
+
+\textbf{Claim}:  The line integral around any closed curve vanishes if and only if the vector field $\vb{F}$ is conservative.
+
+\textbf{Proof}:  Suppose that $\vb{F}=\nabla \phi$. Integrating along a closed curve $C$ from $\vb{x}(t_a) = \vb{a}$ to $\vb{x}(t_b) = \vb{b}$
+\[
+\oint_C\vb{F} \cdot \mathrm{d}\vb{x} = \int_{t_a}^{t_b}\mathrm{d}t\, \vb{F}(\vb{x}(t)) \cdot \der{\vb{x}}{t} =\int_{t_a}^{t_b}\mathrm{d}t\, \pder{\phi(\vb{x}(t))}{x^i} \cdot \der{\vb{x}}{t} = \int_{t_a}^{t_b} \mathrm{d}t \, \der{}{t}\phi(\vb{x}(t))
+\]
+by the chain rule. Now we have the integral of a total derivative, which gives
+\[
+\oint_C\vb{F} \cdot \mathrm{d}\vb{x}  = \phi(\vb{b}) - \phi(\vb{a}) = 0
+\]
+Suppose that $\oint_C\vb{F} \cdot \mathrm{d}\vb{x}=0$ for any curve $C$. Define a scalar curve $\phi:\mathbb{R}^n \to \mathbb{R}$ with $\phi(\vb{0})=0$. At any point $\vb{x}=\vb{y}$, we define
+\[
+\phi(\vb{y})=\int_{C(\vb{y})}\vb{F} \cdot \mathrm{d}\vb{x}
+\]
+where $C(\vb{y})$ is the curve that starts at $\vb{x}=\vb{0}$ and ends at $\vb{x}=\vb{y}$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \draw[line width=1.1pt,
+        domain=0:2.3,
+        samples=200,
+        postaction={decorate},BLUE,
+        decoration={markings, mark=at position 0.5 with {\arrow{>}}}
+       ]
+    plot ({\x},{(\x*\x)*(cos(\x*\x*\x*\x*\x))/cos(1)});
+
+    \pgfmathsetmacro{\xb}{2.3}
+    \pgfmathsetmacro{\yb}{(\xb*\xb)*(cos(\xb*\xb*\xb*\xb*\xb))/cos(1)}
+
+    \fill[red] (0,0) circle (2pt);
+    \fill[red] (\xb,\yb) circle (2pt);
+
+    \node[left] at (0,0) {$\vb{x} = \vb{0}$};
+    \node[right] at (\xb,\yb) {$\vb{x} = \vb{y}$};
+
+    \node[left] at (1.3,1.8) {$C(\vb{y})$};
+\end{tikzpicture}
+\end{figure}
+
+By our assumption,
+\[
+\oint_C \vb{F} \cdot \mathrm{d}\vb{x}=0
+\]
+for any closed curve $C$, so it does not matter which closed curve $C$ we take, they all give the same answer.
+
+Consider,
+\[
+\pder{\phi}{x^i}(\vb{y}) = \lim_{h \to 0}\frac{1}{h}\left\{\int \limits_{C(\vb{y}+h\vb{e}_i)} \vb{F} \cdot \mathrm{d} \vb{x} - \int_{C(\vb{y})}\vb{F} \cdot \mathrm{d}\vb{x}\right\}
+\]
+The first integral goes along the line $C(\vb{y})$ and then along the red line in the $\vb{e}_i$ direction as shown in the figure below. The second integral goes back along the curve $C(\vb{y})$.
+
+\begin{figure}[h!]
+\centering
+\begin{tikzpicture}
+    \draw[line width=1.1pt,
+        domain=0:2.3,
+        samples=200,
+        postaction={decorate},BLUE,
+        decoration={markings, mark=at position 0.5 with {\arrow{>}}}
+       ]
+    plot ({\x},{(\x*\x)*(cos(\x*\x*\x*\x*\x))/cos(1)});
+
+    \pgfmathsetmacro{\xb}{2.3}
+    \pgfmathsetmacro{\yb}{(\xb*\xb)*(cos(\xb*\xb*\xb*\xb*\xb))/cos(1)}
+
+    \draw[thick,ORANGE] (\xb,\yb) -- (\xb + 1,\yb);
+
+    \fill[red] (0,0) circle (2pt);
+    \fill[red] (\xb,\yb) circle (2pt);
+    \fill[red] (\xb+1,\yb) circle (2pt);
+
+    \node[left] at (0,0) {$\vb{x} = \vb{0}$};
+    \node[below] at (\xb,\yb) {$\vb{x} = \vb{y}$};
+    \node[right] at (\xb+1,\yb) {$\vb{x} = \vb{y}+h\vb{e}_i$};
+
+    \node[left] at (1.3,1.8) {$C(\vb{y})$};
+\end{tikzpicture}
+\end{figure}
+
+As a result the difference in the integrals is simply the integral along the orange line
+\[
+\pder{\phi}{x^i}(\vb{y}) = \lim_{h \to 0}\frac{1}{h}\int \limits_{\textcolor{ORANGE}{\mathrm{orange \ line }}} \vb{F} \cdot \mathrm{d} \vb{x}
+\]
+As we are integrating along a straight line in the $\vb{e}_i$ direction, we are projecting the $F_i$ component of $\vb{F}$. As $h$ is small we get
+\[
+\int \limits_{\textcolor{ORANGE}{\mathrm{orange \ line }}} \vb{F} \cdot \mathrm{d} \vb{x}  \approx F_ih
+\]
+and after taking the limit as $h \to 0$,
+\[
+\pder{\phi}{x^i}(\vb{y}) = F_i(\vb{y})) \Rightarrow \vb{F} = \nabla \phi \qquad \qedsymbol
+\]
+
+In order to check if there exists a scalar field $\phi$ such that $\vb{F}=\nabla\phi$ we have
+\[
+F_i = \pder{\phi}{x^i}
+\]
+by definition, differentiating again gives
+\begin{equation}
+\pder{F_i}{x^j} = \ppdermix{\phi}{x^i}{x^j} = \pder{F_j}{x^i}
+\end{equation}
+as for \smartquote{nice} $\vb{F}$ we have $\partial^2F/\partial x \partial y = \partial^2F/\partial y \partial x$. Hence, for $\vb{F}$ to be conservative we need $\partial_iF_j = \partial_jF_i$ for all $i,j$.
+
+\textbf{Exact Differentials}
+
+Given a scalar field $\phi(\vb{x})$ on $\mathbb{R}^n$, we define the \textit{differential} as
+\begin{equation}
+\mathrm{d}\phi = \pder{\phi}{x^i} \, \mathrm{d}x^i=\nabla \phi \cdot \mathrm{d}\vb{x}
+\end{equation}
+This is a function of $\vb{x}$ and captures how much the function $\phi$ changes as we move in any direction around $\vb{x}$.
+
+Consider a field $\vb{F}(\vb{x})$ on $\mathbb{R}^n$. Taking an inner product with an infinitesimal vector to get
+\[
+\vb{F}\cdot \mathrm{d}\vb{x}
+\]
+is a \textit{differential form}. If a differential form can be written as
+\begin{equation}
+\vb{F}\cdot \mathrm{d}\vb{x} = \mathrm{d}\phi=\nabla \phi \cdot \mathrm{d}\vb{x}
+\end{equation}
+for some $\phi$ it is said to be an \textit{exact} differential form. This is a re-formalisation of our idea: a differential is exact
+if and only if the vector field is conservative.
+
+
+\textbf{An Application: Work \& Potential Energy}
+
+Consider a particle with trajectory $\vb{x}(t)$. By Newton's second law
+\[
+\vb{F}(\vb{x}) = m\ddot{\vb{x}}
+\]
+where $\vb{F}(\vb{x})$ is the force field. Recall that a particle has kinetic energy given by $\mathrm{K} = \frac{1}{2}m\dot{\vb{x}}^2$; this kinetic energy changes in time as
+\[
+\mathrm{K}(t_2) - \mathrm{K}(t_1) = \int_{t_1}^{t_2} \mathrm{d}t\,\der{\mathrm{K}}{t} = \int_{t_1}^{t_2}\mathrm{d}t\,(m\dot{\vb{x}} \cdot \ddot{\vb{x}}) = \int_{t_1}^{t_2} \mathrm{d}t \, \dot{\vb{x}} \cdot \vb{F} = \int_C \vb{F} \cdot \mathrm{d}\vb{x}
+\]
+where $C$ is the trajectory of the curve. The line integral of the force $\vb{F}$ along the trajectory $C$ of the particle is known as the \textit{work done}. If our force field $\vb{F}$ is conservative, then
+\[
+\vb{F} = -\nabla \mathrm{V}
+\]
+for some $V$. From the above, for a conservative force the work done only depends on the end points of our trajectory
+\[
+\mathrm{K}(t_2)-\mathrm{K}(t_1) = \int_C \vb{F} \cdot \mathrm{d}\vb{x} = -\mathrm{V}(t_2) + \mathrm{V}(t_1)
+\]
+\[
+\Rightarrow \mathrm{K}(t) + \mathrm{V}(t) = \mathrm{constant}
+\]
+
+
+\textbf{A Subtlety}
+
+Consider the vector field given by
+\[
+\vb{F} = \left(-\frac{y}{x^2+y^2},\frac{x}{x^2+y^2}\right)
+\]
+This is a conservative field with
+\[
+\vb{F} = \nabla \phi \quad \text{and} \quad \phi = \arctan\left(\frac{y}{x}\right)
+\]
+Integrating $\vb{F}$ along a closed curve $C$ given by a circle of radius $R$ about the origin $\vb{x}(t) = (R\cos t,R\sin t)$:
+\[
+\oint_C \vb{F} \cdot \mathrm{d}\vb{x} = \int_{0}^{2\pi} \mathrm{d}t \,\vb{F} \cdot \der{\vb{x}}{t} = \int_{0}^{2\pi} \mathrm{d}t \, \frac{1}{R^2}\left(R^2 \sin^2 t + R^2 \cos^2t\right) = 2\pi
+\]
+Yet we have $\oint_C \vb{F} \cdot \mathrm{d}\vb{x} \neq 0$ when $\vb{F}$ is a conservative field!? This does not vanish as our function $\phi$ is not continuos along the y-axis. In fact, we have implicitly assumed that our function $\phi$ is continuos. We should have $\vb{F} = \nabla \phi$ with $\phi$ continuos to guaranty that $\oint_C \vb{F} \cdot \mathrm{d}\vb{x} = 0$.
